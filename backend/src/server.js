@@ -464,6 +464,39 @@ if (isMain) {
       "WARNING: No GROQ_API_KEY set. Only the quick-question answers will work. See .env.example",
     );
   }
+  
+app.get("/api/network-check", async (req, res) => {
+  const hosts = [
+    "https://example.com",
+    "https://api.data.gov.in",
+    "https://data.gov.in"
+  ];
+
+  const results = await Promise.all(
+    hosts.map(async (url) => {
+      try {
+        const response = await fetch(url, {
+          signal: AbortSignal.timeout(10000)
+        });
+
+        return {
+          host: url,
+          status: response.status,
+          reachable: true
+        };
+      } catch (error) {
+        return {
+          host: url,
+          reachable: false,
+          error: error.cause?.code || error.message
+        };
+      }
+    })
+  );
+
+  res.json(results);
+});
+
 
   const port = Number(process.env.PORT) || 8000;
 

@@ -102,7 +102,6 @@ export function createApp({
   const app = express();
 
   // Render runs behind a reverse proxy.
-  // Trust one proxy hop for correct client IP detection.
   app.set("trust proxy", 1);
 
   const allowedOrigins = (
@@ -149,6 +148,7 @@ export function createApp({
     ),
   );
 
+  // HEALTH CHECK
   app.get("/api/health", (_req, res) => {
     res.json({
       status: "ok",
@@ -157,6 +157,39 @@ export function createApp({
       loginRequired: auth.required,
       mandiConfigured: Boolean(dataGovApiKey && dataGovResourceId),
     });
+  });
+
+  // TEMPORARY NETWORK DIAGNOSTIC
+  app.get("/api/network-check", async (_req, res) => {
+    const hosts = [
+      "https://example.com",
+      "https://api.data.gov.in",
+      "https://data.gov.in",
+    ];
+
+    const results = await Promise.all(
+      hosts.map(async (url) => {
+        try {
+          const response = await fetch(url, {
+            signal: AbortSignal.timeout(10000),
+          });
+
+          return {
+            host: url,
+            status: response.status,
+            reachable: true,
+          };
+        } catch (error) {
+          return {
+            host: url,
+            reachable: false,
+            error: error?.cause?.code || error?.message || "Unknown error",
+          };
+        }
+      }),
+    );
+
+    res.json(results);
   });
 
   // MANDI PRICES API
@@ -464,39 +497,6 @@ if (isMain) {
       "WARNING: No GROQ_API_KEY set. Only the quick-question answers will work. See .env.example",
     );
   }
-  
-app.get("/api/network-check", async (req, res) => {
-  const hosts = [
-    "https://example.com",
-    "https://api.data.gov.in",
-    "https://data.gov.in"
-  ];
-
-  const results = await Promise.all(
-    hosts.map(async (url) => {
-      try {
-        const response = await fetch(url, {
-          signal: AbortSignal.timeout(10000)
-        });
-
-        return {
-          host: url,
-          status: response.status,
-          reachable: true
-        };
-      } catch (error) {
-        return {
-          host: url,
-          reachable: false,
-          error: error.cause?.code || error.message
-        };
-      }
-    })
-  );
-
-  res.json(results);
-});
-
 
   const port = Number(process.env.PORT) || 8000;
 

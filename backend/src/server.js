@@ -185,7 +185,13 @@ export function createApp({
         offset,
       });
     } catch (error) {
-      console.error("Mandi API error:", error?.message ?? error);
+      console.error("Mandi API error details:", {
+            message: error?.message,
+            name: error?.name,
+            cause: error?.cause?.message,
+            code: error?.cause?.code,
+            stack: error?.stack
+});
       return res.status(502).json({ error: "Mandi prices are temporarily unavailable." });
     }
   });

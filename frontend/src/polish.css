@@ -1,0 +1,221 @@
+/* Kishan Saathi: visual polish layer (loaded after styles.css).
+   CSS-only animations (transform/opacity) so it stays smooth on budget phones. */
+
+:root {
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ---------- Keyframes ---------- */
+@keyframes ks-fade-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes ks-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes ks-pop {
+  0% { transform: scale(0.85); opacity: 0; }
+  60% { transform: scale(1.04); opacity: 1; }
+  100% { transform: scale(1); }
+}
+@keyframes ks-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+@keyframes ks-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes ks-pulse-ring {
+  0% { box-shadow: 0 0 0 0 rgb(80 150 110 / 45%); }
+  100% { box-shadow: 0 0 0 14px rgb(80 150 110 / 0%); }
+}
+
+/* ---------- Always-on usability (touch targets, readable text) ---------- */
+.workspace input,
+.workspace select,
+.workspace textarea,
+.auth-page input,
+.auth-page select {
+  min-height: 48px;
+  font-size: 16px; /* also stops iOS zoom-on-focus */
+}
+.workspace button,
+.workspace-hero-action,
+.workspace-sidebar nav a,
+.workspace-sidebar-footer a,
+.auth-page button {
+  min-height: 48px;
+}
+.workspace-sidebar nav a {
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+}
+.workspace-page-heading p,
+.dashboard-summary-card small,
+.dashboard-summary-card span {
+  font-size: 15px;
+}
+:where(a, button, input, select, textarea):focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--primary) 70%, white);
+  outline-offset: 2px;
+  border-radius: 10px;
+}
+
+/* ---------- Dashboard hero with real farm photo ---------- */
+.workspace-hero {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  min-height: 220px;
+  background:
+    linear-gradient(100deg, rgb(16 60 40 / 92%) 0%, rgb(24 90 58 / 78%) 45%, rgb(24 90 58 / 25%) 100%),
+    var(--hero-img) center / cover no-repeat,
+    linear-gradient(120deg, var(--primary), #4e9671);
+}
+.workspace-hero h2 { text-shadow: 0 2px 14px rgb(0 0 0 / 25%); }
+.workspace-hero-action {
+  font-size: 15px;
+  box-shadow: 0 8px 22px rgb(0 0 0 / 20%);
+}
+.workspace-hero-action svg { animation: ks-float 3.2s ease-in-out infinite; }
+
+/* ---------- Colourful, easy-to-scan cards ---------- */
+.dashboard-summary-card,
+.dashboard-feature-card {
+  position: relative;
+  overflow: hidden;
+}
+.dashboard-feature-card svg,
+.dashboard-summary-card > svg {
+  width: 48px;
+  height: 48px;
+  padding: 12px;
+  border-radius: 14px;
+  background: var(--tone-bg, var(--accent));
+  color: var(--tone-ink, var(--primary));
+}
+.dashboard-feature-card:nth-child(4n + 1) { --tone-bg: var(--accent); --tone-ink: var(--primary); }
+.dashboard-feature-card:nth-child(4n + 2) { --tone-bg: var(--sun-surface); --tone-ink: var(--sun-ink); }
+.dashboard-feature-card:nth-child(4n + 3) { --tone-bg: var(--sky-surface); --tone-ink: var(--sky-ink); }
+.dashboard-feature-card:nth-child(4n + 4) { --tone-bg: var(--loan-surface); --tone-ink: var(--loan-ink); }
+.dashboard-grid > :nth-child(1) { --tone-bg: var(--sky-surface); --tone-ink: var(--sky-ink); }
+.dashboard-grid > :nth-child(2) { --tone-bg: var(--accent); --tone-ink: var(--primary); }
+.dashboard-grid > :nth-child(3) { --tone-bg: var(--sun-surface); --tone-ink: var(--sun-ink); }
+.dashboard-feature-card strong { font-size: 17px; }
+
+/* Live weather summary on the dashboard */
+.weather-now {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+.weather-now b {
+  font-family: var(--font-display);
+  font-size: 34px;
+  line-height: 1;
+  color: var(--sky-ink);
+}
+.weather-now i {
+  font-style: normal;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--muted-foreground);
+}
+.skeleton-line {
+  display: block;
+  height: 30px;
+  width: 60%;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #e6efe8 25%, #f4f8f5 50%, #e6efe8 75%) 0 0 / 200% 100%;
+}
+
+/* ---------- Mobile polish ---------- */
+@media (max-width: 640px) {
+  .workspace-hero { min-height: 200px; padding: 22px; }
+  .workspace-content { padding-bottom: 96px; }
+  .dashboard-summary-card,
+  .dashboard-feature-card { padding: 18px; }
+}
+
+/* ---------- Motion (only if the user has not asked to reduce it) ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  .workspace-content > *,
+  .auth-page-card {
+    animation: ks-fade-up 0.5s var(--ease-out) both;
+  }
+  .workspace-content > :nth-child(2) { animation-delay: 0.06s; }
+  .workspace-content > :nth-child(3) { animation-delay: 0.12s; }
+  .workspace-content > :nth-child(4) { animation-delay: 0.18s; }
+
+  .dashboard-summary-card,
+  .dashboard-feature-card {
+    animation: ks-fade-up 0.55s var(--ease-out) both;
+    animation-delay: calc(var(--i, 0) * 70ms + 120ms);
+    transition:
+      transform 0.25s var(--ease-out),
+      box-shadow 0.25s var(--ease-out),
+      border-color 0.25s ease;
+  }
+  .workspace-sidebar nav a {
+    transition: background-color 0.2s ease, transform 0.2s var(--ease-out), color 0.2s ease;
+  }
+  .workspace-sidebar nav a:active,
+  .workspace button:active,
+  .workspace-hero-action:active,
+  .auth-page button:active {
+    transform: scale(0.97);
+  }
+  .workspace button,
+  .workspace-hero-action {
+    transition: transform 0.15s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+  }
+  .workspace-hero { animation: ks-fade-in 0.7s ease both; }
+  .brand-mark { animation: ks-pop 0.6s var(--ease-out) both; }
+  .skeleton-line { animation: ks-shimmer 1.4s linear infinite; }
+  .workspace-chat-form button:not(:disabled) { animation: ks-pulse-ring 2.4s ease-out infinite; }
+
+  @media (hover: hover) {
+    .dashboard-summary-card:hover,
+    .dashboard-feature-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lift);
+      border-color: color-mix(in srgb, var(--primary) 40%, var(--border));
+    }
+    .workspace-sidebar nav a:hover { transform: translateX(3px); }
+    .dashboard-feature-card:hover svg { animation: ks-pop 0.45s var(--ease-out); }
+  }
+}
+
+/* ---------- Contrast + mobile header fixes ---------- */
+.workspace-hero .eyebrow {
+  color: #d9f5c4;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+.workspace-hero .eyebrow::before { background: #d9f5c4; }
+@media (max-width: 900px) {
+  .workspace-topbar { padding-left: 64px; } /* keeps the menu button off the title */
+}
+
+/* ---------- Tool illustrations on dashboard cards ---------- */
+.dashboard-feature-card .tool-art {
+  display: block; height: 120px; overflow: hidden; margin: -4px -4px 0; padding: 10px 14px 2px; box-sizing: border-box;
+  border-radius: 14px;
+  background:
+    radial-gradient(120% 80% at 50% 0%, #fff 0%, rgb(255 255 255 / 0%) 70%),
+    linear-gradient(180deg, #f9fcf7 0%, #e7f4de 100%);
+}
+.dashboard-feature-card .tool-art img {
+  display: block; width: auto; max-width: 100%; height: 100%; margin: 0 auto; object-fit: contain;
+  filter: drop-shadow(0 8px 10px rgb(14 58 34 / 14%));
+}
+@media (prefers-reduced-motion: no-preference) {
+  .dashboard-feature-card .tool-art img { transition: transform 0.45s var(--ease-out); }
+  @media (hover: hover) {
+    .dashboard-feature-card:hover .tool-art img { transform: scale(1.08) rotate(-1.5deg); }
+  }
+}

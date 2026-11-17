@@ -1,0 +1,264 @@
+/* Kishan Saathi: tool pages polish (banner, cards, forms, buttons).
+   Scoped to the logged-in workspace so the landing page is untouched. */
+
+.workspace-main {
+  background:
+    radial-gradient(900px 420px at 100% -8%, rgb(200 245 59 / 16%), transparent 62%),
+    radial-gradient(760px 420px at -8% 108%, rgb(31 107 58 / 9%), transparent 62%),
+    #f4f8f2;
+}
+
+/* ---------- Page banner ---------- */
+.tool-banner {
+  --tb-a: #e9f7df; --tb-b: #d2eec4;
+  position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(220px, 38%);
+  align-items: end; gap: 20px; min-height: 224px; margin-bottom: 26px;
+  padding: clamp(22px, 4vw, 34px) clamp(22px, 4vw, 44px) 0;
+  border: 1px solid rgb(14 58 34 / 8%); border-radius: 30px; overflow: hidden; isolation: isolate;
+  background: linear-gradient(120deg, var(--tb-a), var(--tb-b));
+  box-shadow: 0 18px 44px rgb(14 58 34 / 8%);
+}
+.tool-banner.tone-sun { --tb-a: #fff4d8; --tb-b: #ffe6a6; }
+.tool-banner.tone-mint { --tb-a: #e4f7ec; --tb-b: #c6ecd6; }
+.tool-banner.tone-sky { --tb-a: #e6f1fd; --tb-b: #cde3f8; }
+.tool-banner.tone-peach { --tb-a: #fdeadb; --tb-b: #fad3ae; }
+.tool-banner.tone-lilac { --tb-a: #eee8fb; --tb-b: #dcd1f6; }
+.tool-banner::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(circle at 88% 14%, rgb(255 255 255 / 75%) 0 90px, transparent 91px),
+    radial-gradient(circle at 70% 120%, rgb(255 255 255 / 55%) 0 140px, transparent 141px),
+    radial-gradient(circle at 4% 100%, rgb(255 255 255 / 45%) 0 80px, transparent 81px);
+}
+.tool-banner-text { padding-bottom: clamp(22px, 4vw, 40px); align-self: center; }
+.tool-banner .eyebrow { color: #1f6b3a; font-weight: 700; letter-spacing: 0.08em; }
+.tool-banner h2 {
+  margin: 8px 0 10px; max-width: 560px; color: #0e3a22;
+  font-size: clamp(27px, 4vw, 44px); line-height: 1.08; letter-spacing: -0.02em;
+}
+.tool-banner p { max-width: 520px; color: #3f5f4a; font-size: 16.5px; line-height: 1.6; }
+/* Art stage: a small icon and the farmer stand side by side on the banner.
+   Both assets are transparent, so they sit directly on the pastel background. */
+.tool-banner-art {
+  --illus-w: 120px; --person-h: 100%;
+  position: relative; align-self: stretch; min-height: 190px; min-width: 0;
+  display: flex; align-items: flex-end; justify-content: flex-end; gap: clamp(2px, 1vw, 12px);
+}
+.tool-banner-art::before { /* soft halo that seats the characters on the banner */
+  content: ""; position: absolute; z-index: -1; right: 4%; bottom: -30%; width: 86%; aspect-ratio: 1;
+  border-radius: 50%; background: radial-gradient(closest-side, rgb(255 255 255 / 55%), rgb(255 255 255 / 0%));
+}
+.tool-banner-illus {
+  flex: 0 1 auto; align-self: center; min-width: 0; width: min(var(--illus-w), 38%); height: auto; max-height: 136px; margin-bottom: 14px;
+  object-fit: contain; filter: drop-shadow(0 10px 14px rgb(14 58 34 / 18%));
+}
+.tool-banner-person {
+  flex: 0 1 auto; min-width: 0; height: var(--person-h); max-height: 236px; width: auto; max-width: 58%;
+  object-fit: contain; object-position: bottom; filter: drop-shadow(0 8px 12px rgb(14 58 34 / 12%));
+}
+/* Illustrations differ in aspect ratio (calendar and building are wide; the rest are square-ish),
+   so each tool tunes its own proportions instead of sharing one set of numbers. */
+.tool-banner[data-tool="crop-calendar"] { --tb-b: #ffe9b0; }
+.tool-banner[data-tool="crop-calendar"] .tool-banner-art { --illus-w: 148px; }
+.tool-banner[data-tool="crop-health"] .tool-banner-art { --illus-w: 124px; }
+.tool-banner[data-tool="schemes"] .tool-banner-art { --illus-w: 150px; --person-h: 94%; }
+.tool-banner[data-tool="loan-eligibility"] .tool-banner-art { --illus-w: 112px; }
+.tool-banner[data-tool="weather"] .tool-banner-art { --illus-w: 120px; }
+.tool-banner[data-tool="mandi"] .tool-banner-art { --illus-w: 132px; }
+.tool-banner[data-tool="emi-calculator"] .tool-banner-art { --illus-w: 104px; }
+.tool-banner[data-tool="assistant"] .tool-banner-art { --illus-w: 116px; }
+
+/* ---------- Cards ---------- */
+.workspace-content [data-slot="card"] {
+  position: relative; border: 1px solid rgb(14 58 34 / 7%); border-radius: 28px; background: #fff; overflow: hidden;
+  box-shadow: 0 20px 48px rgb(14 58 34 / 9%);
+}
+.workspace-content [data-slot="card"]::before {
+  content: ""; position: absolute; inset: 0 0 auto 0; height: 5px; z-index: 1;
+  background: linear-gradient(90deg, #c8f53b, #4fae6a 55%, #1f6b3a);
+}
+.workspace-content [data-slot="card-header"] {
+  padding: 26px 28px 20px; background: linear-gradient(180deg, #f2faec 0%, #fff 100%); border-bottom: 1px solid #e3eee3;
+}
+.workspace-content [data-slot="card-title"] { display: flex; align-items: center; gap: 10px; font-size: 20px; font-weight: 700; color: #0e3a22; }
+.workspace-content [data-slot="card-title"] svg { width: 40px; height: 40px; padding: 9px; border-radius: 12px; background: #e5f6d5; color: #1f6b3a; }
+
+/* ---------- Form controls ---------- */
+.workspace-content label { font-weight: 600; color: #123b26; }
+.workspace-content :is(input:not([type="range"], [type="checkbox"], [type="radio"], [type="file"]), select, textarea) {
+  min-height: 52px; padding-inline: 16px; border: 1.5px solid #cfe0d2; border-radius: 14px;
+  background-color: #fbfdfa; color: #0e3a22; font-size: 16px; box-shadow: none;
+  transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+}
+.workspace-content textarea { padding-block: 12px; }
+.workspace-content :is(input, select, textarea)::placeholder { color: #8aa393; }
+.workspace-content :is(input:not([type="range"], [type="checkbox"], [type="radio"]), select, textarea):hover { border-color: #9fcaa9; background-color: #fff; }
+.workspace-content :is(input:not([type="range"], [type="checkbox"], [type="radio"]), select, textarea):focus {
+  outline: none; border-color: #1f6b3a; background-color: #fff; box-shadow: 0 0 0 4px rgb(200 245 59 / 38%);
+}
+.workspace-content :is(input[type="checkbox"], input[type="radio"]) { width: 20px; height: 20px; accent-color: #1f6b3a; }
+
+/* ---------- Buttons ---------- */
+.workspace-content [data-slot="button"]:not([class*="w-9"], [class*="w-8"], [class*="size-"]) {
+  min-height: 52px; padding-inline: 26px; border-radius: 999px; font-size: 16px; font-weight: 700; letter-spacing: 0;
+}
+.workspace-content [data-slot="button"][data-variant="default"]:not([class*="w-9"]) {
+  background: linear-gradient(135deg, #34a05a 0%, #1f6b3a 100%); color: #fff; border: 0;
+  box-shadow: 0 12px 26px rgb(31 107 58 / 30%);
+  transition: transform 0.2s var(--ease-out, ease), box-shadow 0.2s, filter 0.2s;
+}
+.workspace-content [data-slot="button"][data-variant="default"]:not([class*="w-9"]):hover { filter: brightness(1.06); box-shadow: 0 16px 32px rgb(31 107 58 / 38%); }
+.workspace-content [data-slot="button"][data-variant="outline"]:not([class*="w-9"]) {
+  border: 1.5px solid #cfe0d2; background: #fff; color: #123b26; box-shadow: none;
+}
+.workspace-content [data-slot="button"][data-variant="outline"]:not([class*="w-9"]):hover { background: #eef7e8; border-color: #9fcaa9; }
+.workspace-content [data-slot="button"]:disabled { opacity: 0.55; filter: grayscale(0.2); box-shadow: none; }
+
+/* ---------- Info tiles, results, tables ---------- */
+.workspace-content .rounded-xl.border { border-radius: 20px; border-color: #e0ecdf; background: linear-gradient(180deg, #fbfdfa, #f2f9ee); }
+.workspace-content table { width: 100%; border-collapse: separate; border-spacing: 0; overflow: hidden; border-radius: 18px; border: 1px solid #e0ecdf; }
+.workspace-content thead th { padding: 14px 16px; background: #eaf6e1; color: #1f4d33; font-size: 13px; letter-spacing: 0.04em; text-transform: uppercase; text-align: left; }
+.workspace-content tbody td { padding: 14px 16px; border-top: 1px solid #edf3ec; font-size: 15.5px; }
+.workspace-content tbody tr:hover td { background: #f6fbf2; }
+
+/* Placeholder panel on the right of forms ("Your suggestions will appear here") */
+.workspace-content [class*="border-dashed"] {
+  border: 2px dashed #bcd9c0 !important; border-radius: 24px !important;
+  background: radial-gradient(120% 90% at 50% 0%, #fff 0%, #eef8e8 100%) !important; color: #41614c;
+}
+.workspace-content [class*="border-dashed"] svg { width: 44px; height: 44px; padding: 10px; border-radius: 14px; background: #dcf0cf; color: #1f6b3a; }
+
+/* ---------- Assistant ---------- */
+.workspace-chat-card { border-radius: 28px; padding: clamp(16px, 3vw, 28px); background: linear-gradient(180deg, #fff, #f6fbf3); }
+.workspace-chat-row { display: flex; align-items: flex-end; gap: 14px; }
+.chat-avatar {
+  flex: none; width: 72px; height: 72px; border-radius: 50%; object-fit: cover; object-position: 50% 8%;
+  border: 3px solid #fff; background: #e5f6d5; box-shadow: 0 10px 22px rgb(14 58 34 / 16%);
+}
+.workspace-chat-row .workspace-chat-response {
+  position: relative; flex: 1; min-height: 96px; padding: 18px 22px; border-radius: 22px 22px 22px 6px;
+  background: #fff; border: 1px solid #dfeadf; box-shadow: 0 10px 26px rgb(14 58 34 / 7%); font-size: 17px; line-height: 1.65; white-space: pre-wrap;
+}
+.workspace-chat-form { margin-top: 16px; }
+
+/* Conversation log: every question and answer stays on screen and scrolls. */
+.workspace-chat-log {
+  display: flex; flex-direction: column; gap: 14px; max-height: min(52vh, 460px); overflow-y: auto;
+  padding: 2px 4px 6px 2px; scroll-behavior: smooth; overscroll-behavior: contain;
+}
+.workspace-chat-log .workspace-chat-row .workspace-chat-response { min-height: 0; padding: 14px 20px; }
+.workspace-chat-log .chat-avatar { width: 52px; height: 52px; }
+.workspace-chat-row.is-user { justify-content: flex-end; }
+.workspace-chat-row.is-user .workspace-chat-response.user-bubble {
+  flex: 0 1 auto; max-width: min(78%, 560px); border-radius: 22px 22px 6px 22px;
+  background: linear-gradient(135deg, #2f7d4a, #1f6b3a); border-color: transparent; color: #fff;
+}
+.workspace-chat-response.is-error { background: #fff6f4; border-color: #f1cfc8; color: #8a2f21; }
+.workspace-chat-response.typing { display: inline-flex; flex: 0 0 auto; gap: 6px; align-items: center; min-height: 0; padding: 16px 20px; }
+.workspace-chat-response.typing span { width: 8px; height: 8px; border-radius: 50%; background: #7bb88e; }
+@media (prefers-reduced-motion: no-preference) {
+  .workspace-chat-response.typing span { animation: chat-dot 1.1s ease-in-out infinite; }
+  .workspace-chat-response.typing span:nth-child(2) { animation-delay: 0.15s; }
+  .workspace-chat-response.typing span:nth-child(3) { animation-delay: 0.3s; }
+  .workspace-chat-log .workspace-chat-row { animation: tb-pop 0.35s ease both; }
+}
+@keyframes chat-dot { 0%, 80%, 100% { opacity: 0.3; transform: translateY(0); } 40% { opacity: 1; transform: translateY(-4px); } }
+@media (max-width: 640px) {
+  .workspace-chat-log .chat-avatar { width: 40px; height: 40px; }
+  .workspace-chat-row { gap: 10px; }
+  .workspace-chat-row.is-user .workspace-chat-response.user-bubble { max-width: 88%; }
+}
+
+/* ---------- Profile ---------- */
+.profile-card { position: relative; display: grid; justify-items: center; gap: 6px; padding: 36px 24px; text-align: center; overflow: hidden;
+  background: radial-gradient(120% 70% at 50% 0%, #e9f7df 0%, #fff 70%); }
+.profile-avatar {
+  display: grid; place-items: center; width: 96px; height: 96px; margin-bottom: 8px; border-radius: 50%;
+  background: linear-gradient(135deg, #c8f53b, #4fae6a); color: #0e3a22; font-size: 42px; font-weight: 700;
+  box-shadow: 0 16px 34px rgb(31 107 58 / 28%), 0 0 0 6px #fff;
+}
+
+/* ---------- Mobile ---------- */
+@media (max-width: 760px) {
+  .tool-banner { grid-template-columns: 1fr; min-height: 0; padding-bottom: 0; border-radius: 24px; }
+  .tool-banner-art { min-height: 150px; justify-content: center; }
+  .tool-banner-art::before { right: 14%; width: 80%; }
+  .tool-banner-person { max-height: 170px; max-width: 48%; }
+  .tool-banner-illus { width: min(var(--illus-w), 34%); max-height: 100px; margin-bottom: 10px; }
+  .workspace-content [data-slot="card-header"] { padding: 20px 18px 16px; }
+  .chat-avatar { width: 52px; height: 52px; }
+}
+
+/* ---------- Motion ---------- */
+@keyframes tb-pop { from { opacity: 0; transform: translateY(18px) scale(0.97); } to { opacity: 1; transform: none; } }
+@keyframes tb-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+@media (prefers-reduced-motion: no-preference) {
+  .tool-banner { animation: tb-pop 0.6s var(--ease-out, ease) both; }
+  .tool-banner-person { animation: tb-pop 0.8s var(--ease-out, ease) 0.15s both; }
+  .tool-banner-illus { animation: tb-pop 0.7s var(--ease-out, ease) 0.3s both, tb-bob 6s ease-in-out 1.1s infinite; }
+  .tool-body { animation: tb-pop 0.6s var(--ease-out, ease) 0.12s both; }
+  .workspace-content [data-slot="button"][data-variant="default"]:not([class*="w-9"]):hover { transform: translateY(-2px); }
+  .workspace-content [data-slot="button"]:active { transform: scale(0.97); }
+}
+
+/* Same layout rules as before, now that page content sits inside .tool-body.
+   (styles.css only matched direct children of .workspace-content, which left Weather/Mandi blank.) */
+.tool-body > .advanced-features { padding: 0; background: transparent; }
+.tool-body > .section { padding: 0; opacity: 1; transform: none; }
+
+/* Cards fill the same width as the banner */
+.tool-body > .section { max-width: none; margin: 0; width: 100%; }
+.tool-body [data-slot="card"] { max-width: none; }
+
+/* File picker */
+.workspace-content input[type="file"] { font-size: 15px; color: #41614c; }
+.workspace-content input[type="file"]::file-selector-button {
+  margin-right: 14px; padding: 12px 22px; border: 0; border-radius: 999px; cursor: pointer;
+  background: linear-gradient(135deg, #34a05a 0%, #1f6b3a 100%); color: #fff; font-weight: 700; font-size: 15px;
+  box-shadow: 0 8px 18px rgb(31 107 58 / 26%);
+}
+@media (max-width: 760px) {
+  .tool-body [data-slot="button"][data-variant="default"] { width: 100%; }
+}
+
+/* Same width as the banner for every page */
+.tool-body .max-w-5xl, .tool-body .workspace-chat-card { max-width: none; }
+.tool-body > .mx-auto { padding: 0; }
+.workspace-content .grid.grid-cols-2.gap-3 { margin-bottom: 18px; }
+.tool-body .profile-card { max-width: none; width: 100%; }
+
+/* Mobile safety: nothing may push past the screen edge */
+.tool-body, .tool-body > *, .tool-body [data-slot="card"] { min-width: 0; max-width: 100%; box-sizing: border-box; }
+.tool-body form, .tool-body [data-slot="input"], .tool-body select { max-width: 100%; min-width: 0; }
+.tool-banner { overflow: hidden; }
+@media (max-width: 760px) {
+  .tool-body [data-slot="button"][data-variant="outline"][data-size="icon"], .tool-body button[aria-label][data-variant="outline"] { width: 44px; min-width: 44px; height: 44px; flex: 0 0 44px; }
+  .tool-body .flex { flex-wrap: nowrap; }
+}
+
+/* Mandi: unit note under the price table */
+.mandi-unit-note { margin: 10px 4px 0; font-size: 13px; line-height: 1.5; color: #5b6b5f; }
+
+.workspace-chat-clear {
+  margin: 10px 0 0 auto; display: block; padding: 6px 14px; border-radius: 999px; border: 1px solid #dfeadf;
+  background: transparent; color: #4b5d51; font-size: 13px; cursor: pointer; transition: background 0.2s, color 0.2s;
+}
+.workspace-chat-clear:hover:not(:disabled) { background: #eef6ea; color: #1f6b3a; }
+.workspace-chat-clear:disabled { opacity: 0.5; cursor: default; }
+.mandi-unit-tag { margin-left: 2px; font-size: 10px; font-weight: 600; letter-spacing: 0; text-transform: none; color: #7a8a7e; }
+.mandi-empty { display: grid; gap: 6px; justify-items: center; padding: 26px 12px; text-align: center; color: #4b5d51; font-size: 14px; line-height: 1.6; }
+.mandi-empty small { color: #6b7d70; font-size: 13px; }
+
+/* Scheme finder: honest note about what the list is, plus official portal links */
+.scheme-note {
+  margin: 18px 0 4px; padding: 16px 18px; border: 1px solid #e6e2b8; border-radius: 16px;
+  background: #fffbe8; color: #4a4a2e; font-size: 14px; line-height: 1.6;
+}
+.scheme-note p { margin: 0 0 8px; }
+.scheme-note-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+.scheme-note-links a {
+  display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 999px;
+  background: #fff; border: 1px solid #cfe3c8; color: #1f6b3a; font-weight: 600; font-size: 13px; text-decoration: none;
+  transition: background 0.2s, transform 0.2s;
+}
+.scheme-note-links a:hover { background: #eef7e9; transform: translateY(-1px); }
